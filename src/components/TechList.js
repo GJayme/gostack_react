@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TechItem from '../components/TechItem';
 
 class TechList extends Component {
   state = {
@@ -10,10 +11,12 @@ class TechList extends Component {
     ]
   };
 
+// Função de manipulação: INPUT
   handleInputChange = e => {
     this.setState({ newTech: e.target.value });
   }
 
+// Função de manipulação: SUBMIT
   handleSubmit = e => {
     e.preventDefault();
 
@@ -22,7 +25,8 @@ class TechList extends Component {
       newTech: '',
     });
   }
-
+  
+// Função de manipulação: DELETE
   handleDelete = (tech) => {
     this.setState ({ techs: this.state.techs.filter(t => t!== tech) })
   }
@@ -34,10 +38,11 @@ class TechList extends Component {
         <h1>{this.state.newTech}</h1>
         <ul>
           {this.state.techs.map(tech => (
-            <li key={tech}>
-              {tech}
-              <button onClick={() => this.handleDelete(tech)}type="button">Remover</button>
-            </li>
+            <TechItem 
+              key={tech} 
+              tech={tech} 
+              onDelete={() => this.handleDelete(tech)} 
+            />
           ))}
         </ul>
         <input 
