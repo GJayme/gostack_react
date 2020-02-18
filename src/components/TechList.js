@@ -4,19 +4,31 @@ import TechItem from '../components/TechItem';
 class TechList extends Component {
   state = {
     newTech: '',
-    techs: [
-      'Node.js',
-      'ReactJS',
-      'React Native'
-    ]
+    techs: []
   };
 
-// Função de manipulação: INPUT
+  //  Executado assim que o componente aparece em tela -> ele pode fazer qualquer tipo de alteração ou execução de código JS.
+  componentDidMount() {
+    const techs = localStorage.getItem('techs');
+    
+    if (techs) {
+      this.setState({ techs: JSON.parse(techs) });
+    }
+  }
+
+  // Executado sempre que houver alterações nas props ou estado -> incluse ele recebe essas props e estados antes de serem alteradas, como parametro.
+  componentDidUpdate(_, prevState) {
+    if (prevState.techs !== this.state.techs) {
+      localStorage.setItem('techs', JSON.stringify(this.state.techs));
+    }
+  }
+
+  // Função de manipulação: INPUT
   handleInputChange = e => {
     this.setState({ newTech: e.target.value });
   }
 
-// Função de manipulação: SUBMIT
+  // Função de manipulação: SUBMIT
   handleSubmit = e => {
     e.preventDefault();
 
@@ -26,7 +38,7 @@ class TechList extends Component {
     });
   }
   
-// Função de manipulação: DELETE
+  // Função de manipulação: DELETE
   handleDelete = (tech) => {
     this.setState ({ techs: this.state.techs.filter(t => t!== tech) })
   }
